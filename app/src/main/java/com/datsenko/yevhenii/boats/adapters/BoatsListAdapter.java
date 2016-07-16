@@ -1,7 +1,6 @@
 package com.datsenko.yevhenii.boats.adapters;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.datsenko.yevhenii.boats.R;
+import com.datsenko.yevhenii.boats.activity.MainActivity;
 import com.datsenko.yevhenii.boats.fragments.BoatDetailFragment;
 import com.datsenko.yevhenii.boats.models.Boat;
 
@@ -37,13 +37,14 @@ public class BoatsListAdapter extends RecyclerView.Adapter<BoatsListAdapter.Boat
             @Override
             public void onClick(View view) {
                 Toast.makeText(activity, arrayBoats.get(vh.getAdapterPosition()).getId(), Toast.LENGTH_SHORT).show();
-                FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
+//                FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
                 BoatDetailFragment boatDetailFragment = new BoatDetailFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("id",arrayBoats.get(vh.getAdapterPosition()).getId());
                 boatDetailFragment.setArguments(bundle);
-                transaction = transaction.replace(R.id.main_frame,boatDetailFragment);
-                transaction.commit();
+//                transaction = transaction.replace(R.id.main_frame,boatDetailFragment);
+//                transaction.commit();
+                ((MainActivity)activity).showFragment(boatDetailFragment,"detail",false);
             }
         });
 

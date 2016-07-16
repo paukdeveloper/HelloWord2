@@ -2,39 +2,44 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/linear_buttom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <Button
-            android:text="characters"
             android:id="@+id/boats_detail_characters"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="characters" />
+
         <Button
-            android:text="images"
             android:id="@+id/boats_detail_images"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="images" />
+
         <Button
-            android:text="videos"
             android:id="@+id/boats_detail_videos"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="videos" />
     </LinearLayout>
-    <TextView
-        android:id="@+id/boats_detail_detail"
-        android:layout_below="@+id/linear_buttom"
+    <!--<TextView-->
+    <!--android:id="@+id/boats_detail_detail"-->
+    <!--android:layout_below="@+id/linear_buttom"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+    <FrameLayout
+        android:id="@+id/frame_detail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linear_buttom"/>
 
 </RelativeLayout>
 
-<!--<android.support.v7.widget.RecyclerView-->
-<!--android:layout_below="@+id/linear_buttom"-->
-<!--android:id="@+id/boats_detail_rv"-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="match_parent">-->
+    <!--<android.support.v7.widget.RecyclerView--><!--android:layout_below="@+id/linear_buttom"--><!--android:id="@+id/boats_detail_rv"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent">-->
 
-<!--</android.support.v7.widget.RecyclerView>-->
+    <!--</android.support.v7.widget.RecyclerView>-->
