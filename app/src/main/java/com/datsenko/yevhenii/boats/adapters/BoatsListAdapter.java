@@ -41,6 +41,7 @@ public class BoatsListAdapter extends RecyclerView.Adapter<BoatsListAdapter.Boat
                 BoatDetailFragment boatDetailFragment = new BoatDetailFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("id",arrayBoats.get(vh.getAdapterPosition()).getId());
+                bundle.putString("name",arrayBoats.get(vh.getAdapterPosition()).getName());
                 boatDetailFragment.setArguments(bundle);
 //                transaction = transaction.replace(R.id.main_frame,boatDetailFragment);
 //                transaction.commit();

@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.datsenko.yevhenii.boats.R;
 import com.datsenko.yevhenii.boats.fragments.BoatDetailFragment;
@@ -30,17 +33,23 @@ public class MainActivity extends AppCompatActivity {
     private static long back_pressed;
     public static String language;
 
+//    private Toolbar toolbar;
+    public static Spinner spinner;
+    public static TextView title;
+
     public static ArrayList<Boat> boats = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+//        setSupportActionBar(toolbar);
+        spinner = (Spinner) findViewById(R.id.toolbar_spinner);
+        spinner.setVisibility(View.GONE);
+        title = (TextView) findViewById(R.id.toolbar_title);
 
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         BoatsListFragment boatsListFragment = new BoatsListFragment();
-//        transaction = transaction.replace(R.id.main_frame,boatsListFragment);
-//        transaction.commit();
         showFragment(boatsListFragment, "list", false);
 
     }

@@ -1,7 +1,10 @@
 package com.datsenko.yevhenii.boats.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.datsenko.yevhenii.boats.R;
 import com.datsenko.yevhenii.boats.activity.MainActivity;
@@ -51,30 +56,66 @@ public class BoatsListFragment extends Fragment {
 
 
     private RecyclerView mRecyclerView;
+    private ProgressBar mProgressBar;
     private RecyclerView.LayoutManager mLayoutManager;
     private BoatsListAdapter mBoatsListAdapter;
 
     private ArrayList<Boat> mBoatArrayList = new ArrayList<>();
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MainActivity.spinner.setVisibility(View.GONE);
+        MainActivity.title.setText(getString(R.string.app_name));
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.boats_list_layout, container, false);
-        initData();
+
         mRecyclerView = (RecyclerView) root.findViewById(R.id.boats_list_recycler_view);
+        mProgressBar = (ProgressBar) root.findViewById(R.id.progressBar);
+        initData();
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mBoatsListAdapter = new BoatsListAdapter(mBoatArrayList,getActivity());
+        mBoatsListAdapter = new BoatsListAdapter(mBoatArrayList, getActivity());
         mRecyclerView.setAdapter(mBoatsListAdapter);
+        if (!mBoatArrayList.isEmpty()) {
+            mBoatsListAdapter.notifyDataSetChanged();
+        }
 
         return root;
     }
 
     private void initData() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String response = prefs.getString(MainActivity.SHARED_PREF_KEY_JSON, null);
+        if (response != null) {
+            mBoatArrayList = getBoatArrayList(response);
+            MainActivity.boats.clear();
+            MainActivity.boats.addAll(mBoatArrayList);
+            if (isOnline()) {
+                new DownloadJSONTask().execute(URL_BOATS);
+            } else {
+                Toast.makeText(getActivity(), "No Internet connection", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            if (isOnline()) {
+                new DownloadJSONTask().execute(URL_BOATS);
+                mProgressBar.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.INVISIBLE);
+            } else {
+                Toast.makeText(getActivity(), "No Internet connection", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
-
-        if(mBoatArrayList.isEmpty())
-            new DownloadJSONTask().execute(URL_BOATS);
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnected();
     }
 
     public ArrayList<FieldCharacteristics> getArrayListFields(Object object) throws JSONException {
@@ -108,11 +149,11 @@ public class BoatsListFragment extends Fragment {
         try {
             JSONObject root = new JSONObject(json);
             List<String> boatsIDs = getAllKeys(root);
-            Log.d("LOG_TAG",boatsIDs.toString());
+            Log.d("LOG_TAG", boatsIDs.toString());
             boatArrayListInner = new ArrayList<>();
             for (String boatID : boatsIDs) {
                 JSONObject boatJsonObject = root.getJSONObject(boatID);
-                Boat boat = new Boat(boatID,boatJsonObject.getString(JSON_NAME_BOAT));
+                Boat boat = new Boat(boatID, boatJsonObject.getString(JSON_NAME_BOAT));
                 ArrayList<String> tempArrayKeys = new ArrayList<>();
                 ArrayList<String> tempArrayValue = new ArrayList<>();
                 //get array images
@@ -138,7 +179,7 @@ public class BoatsListFragment extends Fragment {
                 for (int i = 0; i < arrayLanguages.length(); i++) {
                     JSONObject languageJSON = arrayLanguages.getJSONObject(i);
                     BoatsCharacteristics boatsCharacteristics =
-                            new BoatsCharacteristics(languageJSON.getString(JSON_LANGUAGE_ABBREVIATION_BOAT),languageJSON.getString(JSON_LANGUAGE_NAME_BOAT));
+                            new BoatsCharacteristics(languageJSON.getString(JSON_LANGUAGE_ABBREVIATION_BOAT), languageJSON.getString(JSON_LANGUAGE_NAME_BOAT));
                     Object object = languageJSON.get(JSON_LANGUAGE_FIELDS_BOAT);
                     boatsCharacteristics.setCharacteristicsArrayList(getArrayListFields(object));
                     boat.addCharacteristicsArrayList(boatsCharacteristics);
@@ -154,10 +195,10 @@ public class BoatsListFragment extends Fragment {
         return boatArrayListInner;
     }
 
-    private ArrayList<String> getAllKeys (JSONObject jsonObject) {
+    private ArrayList<String> getAllKeys(JSONObject jsonObject) {
         Iterator iterator = jsonObject.keys();
         ArrayList<String> keys = new ArrayList<String>();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             String key = (String) iterator.next();
             keys.add(key);
         }
@@ -170,7 +211,7 @@ public class BoatsListFragment extends Fragment {
         protected ArrayList<Boat> doInBackground(String[] strings) {
             String content;
             ArrayList<Boat> boatArrayListInner = null;
-            try{
+            try {
                 content = getContent(strings[0]);
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 Log.d("LOG_TAG", "saveJSONToSharedPref: " + content);
@@ -178,11 +219,10 @@ public class BoatsListFragment extends Fragment {
                 editor.putString(MainActivity.SHARED_PREF_KEY_JSON, content);
                 editor.apply();
                 boatArrayListInner = getBoatArrayList(content);
-                Log.d("LOG_TAG","Mine structure" + boatArrayListInner.toString());
+                Log.d("LOG_TAG", "Mine structure" + boatArrayListInner.toString());
 //            Log.d("LOG_TAG", root.toString());
                 Log.d("LOG_TAG", content);
-            }
-            catch (IOException ex){
+            } catch (IOException ex) {
                 content = ex.getMessage();
             }
 
@@ -201,28 +241,30 @@ public class BoatsListFragment extends Fragment {
 //            Log.d("LOG_TAG", s);
             mBoatArrayList.clear();
             mBoatArrayList.addAll(boatArrayList);
+            mProgressBar.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
             mBoatsListAdapter.notifyDataSetChanged();
             MainActivity.boats.clear();
             MainActivity.boats.addAll(mBoatArrayList);
 
         }
+
         private String getContent(String path) throws IOException {
-            BufferedReader reader=null;
+            BufferedReader reader = null;
             try {
-                URL url=new URL(path);
-                HttpURLConnection c=(HttpURLConnection)url.openConnection();
+                URL url = new URL(path);
+                HttpURLConnection c = (HttpURLConnection) url.openConnection();
                 c.setRequestMethod("GET");
                 c.setReadTimeout(10000);
                 c.connect();
-                reader= new BufferedReader(new InputStreamReader(c.getInputStream()));
-                StringBuilder buf=new StringBuilder();
-                String line=null;
-                while ((line=reader.readLine()) != null) {
+                reader = new BufferedReader(new InputStreamReader(c.getInputStream()));
+                StringBuilder buf = new StringBuilder();
+                String line = null;
+                while ((line = reader.readLine()) != null) {
                     buf.append(line);
                 }
-                return(buf.toString());
-            }
-            finally {
+                return (buf.toString());
+            } finally {
                 if (reader != null) {
                     reader.close();
                 }

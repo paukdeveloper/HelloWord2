@@ -2,18 +2,22 @@ package com.datsenko.yevhenii.boats.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.datsenko.yevhenii.boats.R;
 import com.datsenko.yevhenii.boats.activity.MainActivity;
@@ -51,7 +55,7 @@ public class CharactersFragmentList extends Fragment {
         mCharactListAdapter = new CharactListAdapter(mCharacteristicsArrayList.get(0).getCharacteristicsArrayList(), getActivity());
         mRecyclerView.setAdapter(mCharactListAdapter);
 
-//        setupSpinner();
+        setupSpinner();
         return root;
     }
 
@@ -66,49 +70,48 @@ public class CharactersFragmentList extends Fragment {
         }
     }
 
+    private void addMargintoSpinner() {
+        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+//        ((MainActivity)getActivity())
+        Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+//        layoutParams.setMargins(getPixelValue(getActivity(),(int)dpWidth/2), 0, 0, 0);
+        layoutParams.setMargins((int)dpWidth/2, 0, 0, 0);
+        MainActivity.spinner.setLayoutParams(layoutParams);
+
+        Toast.makeText(getActivity(), "sda " + MainActivity.spinner.getMeasuredWidth(), Toast.LENGTH_SHORT).show();
+    }
+
+
+    public static int getPixelValue(Context context, int dimenId) {
+        Resources resources = context.getResources();
+        return (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dimenId,
+                resources.getDisplayMetrics()
+        );
+    }
+
     private void setupSpinner() {
         ArrayList<String> arrayLang = new ArrayList<>();
-//        ActionBar ab = getActivity().get();
-        ActionBar ab = ((MainActivity) getActivity()).getSupportActionBar();
-        ab.setDisplayShowCustomEnabled(true);
-        ab.setDisplayShowCustomEnabled(true);
-        LayoutInflater inflator = (LayoutInflater) getActivity()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(R.layout.action_bar_spinner, null);
         MySpinnerAdapter spinnerAdapter = new MySpinnerAdapter();
+
         for (BoatsCharacteristics boatsCharacteristics : mCharacteristicsArrayList) {
             arrayLang.add(boatsCharacteristics.getName());
         }
 
         spinnerAdapter.addItems(arrayLang);
 //
-        Spinner spinner = (Spinner) v.findViewById(R.id.spinner_main);
-        Drawable spinnerDrawable = spinner.getBackground().getConstantState().newDrawable();
+
+        Drawable spinnerDrawable = MainActivity.spinner.getBackground().getConstantState().newDrawable();
         spinnerDrawable.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-        spinner.setBackground(spinnerDrawable);
-        spinner.setAdapter(spinnerAdapter);
-//        if (getIntent().getStringExtra(TYPE_NEWS) != null) {
-//            Toast.makeText(NewsActivity.this, getIntent().getStringExtra(TYPE_NEWS), Toast.LENGTH_SHORT).show();
-////            for (int i = 0; i < filteredTitles.size(); i++) {
-////                if (filteredTitles.get(i).contains(getIntent().getStringExtra(TYPE_NEWS))) {
-////                    typeNews = i+1;
-////                } else typeNews = 0;
-////
-////            }
-//            ArrayList<TVNew> filteredNewsList = new ArrayList<>();
-//            String lastType = getIntent().getStringExtra(TYPE_NEWS);
-//            Log.d("Tag_titlr_id", lastType);// + " size news" + news.size());
-////            for (TVNew newsItem : news) {
-////                Log.d("Tag_titlr_id",lastType + " " + newsItem.getTitle());
-////                if (lastType.contains(newsItem.getTitle())) {
-////                    filteredNewsList.add(newsItem);
-////                }
-////            }
-////            setNewsToList(filteredNewsList);
-//
-//        }
-        spinner.setSelection(0);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        MainActivity.spinner.setBackground(spinnerDrawable);
+        MainActivity.spinner.setAdapter(spinnerAdapter);
+        MainActivity.spinner.setSelection(0);
+        MainActivity.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
@@ -120,14 +123,16 @@ public class CharactersFragmentList extends Fragment {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-        v.setVisibility(View.GONE);
-        ab.setCustomView(v);
+//        addMargintoSpinner();
 
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
+//        addMargintoSpinner();
+        MainActivity.spinner.setVisibility(View.VISIBLE);
+//        addMargintoSpinner();
     }
 }

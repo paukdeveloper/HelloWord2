@@ -7,26 +7,34 @@
         android:id="@+id/boats_list_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/boats_list_arrow"
-        android:layout_alignTop="@+id/boats_list_arrow"
-        android:layout_toLeftOf="@+id/boats_list_arrow"
-        android:layout_toStartOf="@+id/boats_list_arrow"
+            android:layout_toLeftOf="@+id/boats_list_arrow"
+            android:layout_toStartOf="@+id/boats_list_arrow"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:text="name" />
+        android:paddingBottom="8dp"
+        android:paddingLeft="24dp"
+        android:paddingTop="8dp"
+        android:text="name"
+        android:textSize="16dp" />
 
     <ImageView
         android:id="@+id/boats_list_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:paddingRight="24dp"
+        android:layout_centerVertical="true"
+        android:layout_alignBottom="@+id/boats_list_name"
+        android:layout_alignTop="@+id/boats_list_name"
         android:src="@drawable/ic_arrow_right_144dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/boats_list_arrow"
+        android:layout_below="@id/boats_list_name"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:background="@color/colorListDivider" />
 
 </RelativeLayout>

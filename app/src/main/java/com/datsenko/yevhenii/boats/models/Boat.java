@@ -61,6 +61,8 @@ public class Boat {
         if (this.characteristicsArrayList == null) {
             this.characteristicsArrayList = new ArrayList<>();
             this.characteristicsArrayList.add(characteristicsArrayList);
+        } else {
+            this.characteristicsArrayList.add(characteristicsArrayList);
         }
     }
 
