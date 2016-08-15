@@ -1,7 +1,7 @@
 package com.datsenko.yevhenii.boats.adapters;
 
 import android.app.Activity;
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.datsenko.yevhenii.boats.R;
-import com.datsenko.yevhenii.boats.activity.MainActivity;
-import com.datsenko.yevhenii.boats.fragments.BoatDetailFragment;
+import com.datsenko.yevhenii.boats.activity.DetailBoatActivity;
 import com.datsenko.yevhenii.boats.models.Boat;
 
 import java.util.ArrayList;
@@ -38,14 +37,17 @@ public class BoatsListAdapter extends RecyclerView.Adapter<BoatsListAdapter.Boat
             public void onClick(View view) {
                 Toast.makeText(activity, arrayBoats.get(vh.getAdapterPosition()).getId(), Toast.LENGTH_SHORT).show();
 //                FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
-                BoatDetailFragment boatDetailFragment = new BoatDetailFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("id",arrayBoats.get(vh.getAdapterPosition()).getId());
-                bundle.putString("name",arrayBoats.get(vh.getAdapterPosition()).getName());
-                boatDetailFragment.setArguments(bundle);
+                Intent intent = new Intent(activity, DetailBoatActivity.class);
+
+//                BoatDetailFragment boatDetailFragment = new BoatDetailFragment();
+//                Bundle bundle = new Bundle();
+                intent.putExtra("id",arrayBoats.get(vh.getAdapterPosition()).getId());
+                intent.putExtra("name",arrayBoats.get(vh.getAdapterPosition()).getName());
+                intent.putExtra("bool",true);
+                activity.startActivity(intent);
 //                transaction = transaction.replace(R.id.main_frame,boatDetailFragment);
 //                transaction.commit();
-                ((MainActivity)activity).showFragment(boatDetailFragment,"detail",false);
+//                ((MainActivity)activity).showFragment(boatDetailFragment,"detail",false);
             }
         });
 

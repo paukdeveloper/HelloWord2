@@ -45,8 +45,8 @@ public class BoatsListFragment extends Fragment {
 
     private static final String URL_BOATS = "https://umsboats.firebaseio.com/boats.json";
     private static final String JSON_NAME_BOAT = "name";
-    private static final String JSON_IMAGE_BOAT = "videos";
-    private static final String JSON_VIDEO_BOAT = "images";
+    private static final String JSON_IMAGE_BOAT = "images";
+    private static final String JSON_VIDEO_BOAT = "videos";
     private static final String JSON_LANGUAGES_BOAT = "languages";
     private static final String JSON_LANGUAGE_ABBREVIATION_BOAT = "abbreviation";
     private static final String JSON_LANGUAGE_FIELDS_BOAT = "fields";
@@ -65,7 +65,6 @@ public class BoatsListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity.spinner.setVisibility(View.GONE);
         MainActivity.title.setText(getString(R.string.app_name));
     }
 

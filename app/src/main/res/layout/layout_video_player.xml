@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/frame_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_grid_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/frame_video">
+
+
+        <!--<fragment-->
+        <!--class="com.datsenko.yevhenii.youtubecustomplayer.VideoListFragment"-->
+        <!--android:id="@+id/list_fragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
+
+
+        <!--<Button-->
+        <!--android:id="@+id/btn_start_video"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
+    </FrameLayout>
+
+</RelativeLayout>
+
+    <!--<fragment--><!--class="com.datsenko.yevhenii.boats.fragments.VideoFragment"--><!--android:id="@+id/video_fragment_container"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"/>-->
+
+    <!--<fragment--><!--class="com.datsenko.yevhenii.boats.fragments.VideoGridListFragment"--><!--android:id="@+id/grid_list"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"/>-->

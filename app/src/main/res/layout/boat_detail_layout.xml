@@ -3,30 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/linear_buttom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/boats_detail_characters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="characters" />
-
-        <Button
-            android:id="@+id/boats_detail_images"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="images" />
-
-        <Button
-            android:id="@+id/boats_detail_videos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="videos" />
-    </LinearLayout>
     <!--<TextView-->
     <!--android:id="@+id/boats_detail_detail"-->
     <!--android:layout_below="@+id/linear_buttom"-->

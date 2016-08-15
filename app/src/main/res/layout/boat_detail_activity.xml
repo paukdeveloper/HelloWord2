@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.DetailBoatActivity">
+
+    <RelativeLayout
+        android:id="@+id/main_toolbar_2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/toolbar_title_2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:gravity="center_vertical"
+            android:text="sdsadasasdasdasdasdasd"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/toolbar_spinner_2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_buttom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_toolbar_2"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/boats_detail_characters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="characters" />
+
+        <Button
+            android:id="@+id/boats_detail_images"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="images" />
+
+        <Button
+            android:id="@+id/boats_detail_videos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="videos" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/boat_detail_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_buttom" />
+
+    <FrameLayout
+        android:id="@+id/boats_grid_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/boat_detail_frame"/>
+</RelativeLayout>
