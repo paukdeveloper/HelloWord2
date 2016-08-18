@@ -34,7 +34,7 @@ public class CharactListAdapter extends RecyclerView.Adapter<CharactListAdapter.
     @Override
     public void onBindViewHolder(CharactListViewHolder holder, int position) {
         holder.charactName.setText(arrayCharacters.get(position).getFieldLabel());
-        holder.charactValue.setText(" Value: " + arrayCharacters.get(position).getFieldValue());
+        holder.charactValue.setText(arrayCharacters.get(position).getFieldValue());
     }
 
     @Override
