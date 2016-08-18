@@ -8,13 +8,33 @@ import java.util.ArrayList;
 public class Boat {
     private String id;
     private String name;
+    private String graph;
+    private String web_link;
     private ArrayList<String> arrayImages;
     private ArrayList<String> arrayVideos;
     private ArrayList<BoatsCharacteristics> characteristicsArrayList;
 
-    public Boat(String id, String name) {
+    public Boat(String id, String name, String graph, String web_link) {
         this.id = id;
         this.name = name;
+        this.graph = graph;
+        this.web_link = web_link;
+    }
+
+    public String getGraph() {
+        return graph;
+    }
+
+    public void setGraph(String graph) {
+        this.graph = graph;
+    }
+
+    public String getWeb_link() {
+        return web_link;
+    }
+
+    public void setWeb_link(String web_link) {
+        this.web_link = web_link;
     }
 
     public String getId() {

@@ -207,4 +207,10 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
         }
         back_pressed = System.currentTimeMillis();
     }
+
+    public void changeButtonText(String charact, String photo, String videoName) {
+        characters.setText(charact);
+        images.setText(photo);
+        video.setText(videoName);
+    }
 }

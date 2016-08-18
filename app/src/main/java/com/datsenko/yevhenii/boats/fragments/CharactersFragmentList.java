@@ -84,6 +84,11 @@ public class CharactersFragmentList extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 mCharactListAdapter = new CharactListAdapter(mCharacteristicsArrayList.get(position).getCharacteristicsArrayList(), getActivity());
+                ((DetailBoatActivity)getActivity()).changeButtonText(
+                        mCharacteristicsArrayList.get(position).getCharacteristics(),
+                        mCharacteristicsArrayList.get(position).getPictures(),
+                        mCharacteristicsArrayList.get(position).getVideos()
+                );
                 mRecyclerView.setAdapter(mCharactListAdapter);
             }
 
@@ -92,6 +97,11 @@ public class CharactersFragmentList extends Fragment {
             }
         });
         DetailBoatActivity.spinner.setVisibility(View.VISIBLE);
+        ((DetailBoatActivity)getActivity()).changeButtonText(
+                mCharacteristicsArrayList.get(0).getCharacteristics(),
+                mCharacteristicsArrayList.get(0).getPictures(),
+                mCharacteristicsArrayList.get(0).getVideos()
+        );
     }
 
     @Override
