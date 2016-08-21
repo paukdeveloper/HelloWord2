@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.datsenko.yevhenii.boats.R;
 import com.datsenko.yevhenii.boats.fragments.BoatsListFragment;
@@ -134,8 +133,8 @@ public class MainActivity extends AppCompatActivity {
 //                if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
 //                    showPrevFragment();
 //                } else {
-                Toast.makeText(getBaseContext(), "Press once again to exit!",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getBaseContext(), "Press once again to exit!",
+//                        Toast.LENGTH_SHORT).show();
 //                }
 //                back_pressed = System.currentTimeMillis();
 //            } else {

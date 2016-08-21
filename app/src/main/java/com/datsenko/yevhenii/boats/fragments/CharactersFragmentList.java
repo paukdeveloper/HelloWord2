@@ -46,7 +46,8 @@ public class CharactersFragmentList extends Fragment {
         setupBoatAndID();
 
         mCharacteristicsArrayList = mBoat.getCharacteristicsArrayList();
-        mCharactListAdapter = new CharactListAdapter(mCharacteristicsArrayList.get(0).getCharacteristicsArrayList(), getActivity());
+        int currentIndex = ((DetailBoatActivity)getActivity()).getmIndexCurrentLanguage();
+        mCharactListAdapter = new CharactListAdapter(mCharacteristicsArrayList.get(currentIndex).getCharacteristicsArrayList(), getActivity());
         mRecyclerView.setAdapter(mCharactListAdapter);
 
         setupSpinner();
@@ -78,12 +79,14 @@ public class CharactersFragmentList extends Fragment {
         spinnerDrawable.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         DetailBoatActivity.spinner.setBackground(spinnerDrawable);
         DetailBoatActivity.spinner.setAdapter(spinnerAdapter);
-        DetailBoatActivity.spinner.setSelection(0);
+        int currentIndex = ((DetailBoatActivity)getActivity()).getmIndexCurrentLanguage();
+        DetailBoatActivity.spinner.setSelection(currentIndex);
         DetailBoatActivity.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 mCharactListAdapter = new CharactListAdapter(mCharacteristicsArrayList.get(position).getCharacteristicsArrayList(), getActivity());
+                ((DetailBoatActivity)getActivity()).setmIndexCurrentLanguage(position);
                 ((DetailBoatActivity)getActivity()).changeButtonText(
                         mCharacteristicsArrayList.get(position).getCharacteristics(),
                         mCharacteristicsArrayList.get(position).getPictures(),
@@ -98,9 +101,9 @@ public class CharactersFragmentList extends Fragment {
         });
         DetailBoatActivity.spinner.setVisibility(View.VISIBLE);
         ((DetailBoatActivity)getActivity()).changeButtonText(
-                mCharacteristicsArrayList.get(0).getCharacteristics(),
-                mCharacteristicsArrayList.get(0).getPictures(),
-                mCharacteristicsArrayList.get(0).getVideos()
+                mCharacteristicsArrayList.get(currentIndex).getCharacteristics(),
+                mCharacteristicsArrayList.get(currentIndex).getPictures(),
+                mCharacteristicsArrayList.get(currentIndex).getVideos()
         );
     }
 

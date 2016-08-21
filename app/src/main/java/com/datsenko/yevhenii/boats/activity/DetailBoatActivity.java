@@ -35,6 +35,8 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
     private static final int TIME_DELAY = 1000;
     private static long back_pressed;
 
+    private int mIndexCurrentLanguage = 0;
+
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     private boolean isFullscreen;
 
@@ -78,6 +80,8 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
         if (isShowCharacter) {
             mAdditionFrame.setVisibility(View.GONE);
             CharactersFragmentList fragmentListInner = new CharactersFragmentList();
+//            Bundle arg = new Bundle();
+//            arg.putInt("idSpinner",mIndexCurrentLanguage);
             startFragment(fragmentListInner);
             getIntent().putExtra("bool",false);
 //            isFirstStart = false;
@@ -212,5 +216,13 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
         characters.setText(charact);
         images.setText(photo);
         video.setText(videoName);
+    }
+
+    public int getmIndexCurrentLanguage() {
+        return mIndexCurrentLanguage;
+    }
+
+    public void setmIndexCurrentLanguage(int mIndexCurrentLanguage) {
+        this.mIndexCurrentLanguage = mIndexCurrentLanguage;
     }
 }
