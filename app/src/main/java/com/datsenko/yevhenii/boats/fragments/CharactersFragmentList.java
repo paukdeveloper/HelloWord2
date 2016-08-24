@@ -99,7 +99,7 @@ public class CharactersFragmentList extends Fragment {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-        DetailBoatActivity.spinner.setVisibility(View.VISIBLE);
+//        DetailBoatActivity.spinner.setVisibility(View.VISIBLE);
         ((DetailBoatActivity)getActivity()).changeButtonText(
                 mCharacteristicsArrayList.get(currentIndex).getCharacteristics(),
                 mCharacteristicsArrayList.get(currentIndex).getPictures(),

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.datsenko.yevhenii.boats.R;
+import com.datsenko.yevhenii.boats.activity.DetailBoatActivity;
 import com.datsenko.yevhenii.boats.fragments.VideoFragment;
 import com.datsenko.yevhenii.boats.models.VideoEntry;
 import com.squareup.picasso.Picasso;
@@ -31,6 +32,9 @@ public class RecyclerAdapterVideoList extends RecyclerView.Adapter<RecyclerAdapt
     @Override
     public VideoListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_grid_list_item, parent, false);
+        view.getLayoutParams().height = ((DetailBoatActivity)activity).getWidth()/4;
+        view.getLayoutParams().width = ((DetailBoatActivity)activity).getWidth()/4;
+        view.requestLayout();
         final VideoListViewHolder videoListViewHolder = new VideoListViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,14 +1,27 @@
 package com.datsenko.yevhenii.boats.fragments;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.datsenko.yevhenii.boats.DeveloperKey;
+import com.datsenko.yevhenii.boats.R;
+import com.datsenko.yevhenii.boats.activity.DetailBoatActivity;
+import com.datsenko.yevhenii.boats.activity.MainActivity;
+import com.datsenko.yevhenii.boats.adapters.MySpinnerAdapter;
+import com.datsenko.yevhenii.boats.models.Boat;
+import com.datsenko.yevhenii.boats.models.BoatsCharacteristics;
 import com.datsenko.yevhenii.boats.models.VideoEntry;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +33,8 @@ public class VideoFragment extends YouTubePlayerFragment
     private YouTubePlayer player;
     private String videoId;
     public static List<VideoEntry> video_list;
+    private ArrayList<BoatsCharacteristics> mCharacteristicsArrayList;
+
 
     public static VideoFragment newInstance() {
         return new VideoFragment();
@@ -31,6 +46,14 @@ public class VideoFragment extends YouTubePlayerFragment
 
         initialize(DeveloperKey.DEVELOPER_KEY, this);
     }
+
+    @Override
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+        setupSpinner();
+
+        return super.onCreateView(layoutInflater, viewGroup, bundle);
+    }
+
     @Override
     public void onDestroy() {
         if (player != null) {
@@ -79,7 +102,7 @@ public class VideoFragment extends YouTubePlayerFragment
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean restored) {
         this.player = player;
         player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
-//        player.setOnFullscreenListener(this);
+        player.setOnFullscreenListener(this);
         player.setPlayerStateChangeListener(new VideoListener());
         if (!restored && videoId != null) {
             player.cueVideo(videoId);
@@ -94,12 +117,15 @@ public class VideoFragment extends YouTubePlayerFragment
     @Override
     public void onFullscreen(boolean b) {
 //        if (b) {
-//            VideoGridListFragment gridListFragment = (VideoGridListFragment) getFragmentManager().findFragmentByTag("videoFragmentGridList");
+//            VideoGridListFragment gridListFragment = (VideoGridListFragment) getFragmentManager().findFragmentById(R.id.boats_grid_frame);
 //            getFragmentManager().beginTransaction().remove(gridListFragment).commit();
 //            Toast.makeText(getActivity(), "true", Toast.LENGTH_SHORT).show();
 //        } else {
 //            VideoGridListFragment gridListFragment2 = new VideoGridListFragment();
-//            getFragmentManager().beginTransaction().add(R.id.frame_grid_list,gridListFragment2,"videoFragmentGridList");
+//            Bundle arg = new Bundle();
+//            arg.putStringArrayList("videos", ((DetailBoatActivity)getActivity()).getArrayListVideos());
+//            gridListFragment2.setArguments(arg);
+//            getFragmentManager().beginTransaction().replace(R.id.boats_grid_frame,gridListFragment2,"videoFragmentGridList").commit();
 //        }
     }
 
@@ -135,6 +161,55 @@ public class VideoFragment extends YouTubePlayerFragment
         @Override
         public void onError(YouTubePlayer.ErrorReason errorReason) {
 
+        }
+    }
+
+    private void setupSpinner() {
+        String idBoat = ((DetailBoatActivity) getActivity()).getIdBoat();
+        ArrayList<Boat> boatArrayList = MainActivity.boats;
+        for (Boat tempBoat : boatArrayList) {
+            if (tempBoat.getId().equals(idBoat)) {
+                mCharacteristicsArrayList = tempBoat.getCharacteristicsArrayList();
+                break;
+            }
+        }
+        ArrayList<String> arrayLang = new ArrayList<>();
+        MySpinnerAdapter spinnerAdapter = new MySpinnerAdapter();
+        if (mCharacteristicsArrayList != null) {
+            for (BoatsCharacteristics boatsCharacteristics : mCharacteristicsArrayList) {
+                arrayLang.add(boatsCharacteristics.getName());
+            }
+
+            spinnerAdapter.addItems(arrayLang);
+
+            Drawable spinnerDrawable = DetailBoatActivity.spinner.getBackground().getConstantState().newDrawable();
+            spinnerDrawable.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+            DetailBoatActivity.spinner.setBackground(spinnerDrawable);
+            DetailBoatActivity.spinner.setAdapter(spinnerAdapter);
+            int currentIndex = ((DetailBoatActivity) getActivity()).getmIndexCurrentLanguage();
+            DetailBoatActivity.spinner.setSelection(currentIndex);
+            DetailBoatActivity.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view,
+                                           int position, long id) {
+                    ((DetailBoatActivity) getActivity()).setmIndexCurrentLanguage(position);
+                    ((DetailBoatActivity) getActivity()).changeButtonText(
+                            mCharacteristicsArrayList.get(position).getCharacteristics(),
+                            mCharacteristicsArrayList.get(position).getPictures(),
+                            mCharacteristicsArrayList.get(position).getVideos()
+                    );
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+                }
+            });
+            DetailBoatActivity.spinner.setVisibility(View.VISIBLE);
+            ((DetailBoatActivity) getActivity()).changeButtonText(
+                    mCharacteristicsArrayList.get(currentIndex).getCharacteristics(),
+                    mCharacteristicsArrayList.get(currentIndex).getPictures(),
+                    mCharacteristicsArrayList.get(currentIndex).getVideos()
+            );
         }
     }
 

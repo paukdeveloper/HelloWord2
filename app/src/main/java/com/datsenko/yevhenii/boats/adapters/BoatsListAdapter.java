@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.datsenko.yevhenii.boats.R;
 import com.datsenko.yevhenii.boats.activity.DetailBoatActivity;
@@ -35,7 +34,7 @@ public class BoatsListAdapter extends RecyclerView.Adapter<BoatsListAdapter.Boat
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(activity, arrayBoats.get(vh.getAdapterPosition()).getId(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity, arrayBoats.get(vh.getAdapterPosition()).getId(), Toast.LENGTH_SHORT).show();
 //                FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
                 Intent intent = new Intent(activity, DetailBoatActivity.class);
 

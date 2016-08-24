@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -55,6 +56,8 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
     private Button video;
 
     private String idBoat;
+    private static int width;
+    private ArrayList<String> arrayListVideos;
 //    private static boolean isFirstStart = true;
 
     @Override
@@ -70,28 +73,37 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
         images = (Button) findViewById(R.id.boats_detail_images);
         video = (Button) findViewById(R.id.boats_detail_videos);
 
+        //
         idBoat = getIntent().getStringExtra("id");
         if (getIntent().getStringExtra("name") != null)
             DetailBoatActivity.title.setText(getIntent().getStringExtra("name"));
-
-//        initData();
+//        setupSpinner();
+        //        initData();
         boolean isShowCharacter = getIntent().getBooleanExtra("bool",true);
 
+
         if (isShowCharacter) {
-            mAdditionFrame.setVisibility(View.GONE);
+            ViewTreeObserver vto = mToolbarLayout.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    mToolbarLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    width  = mToolbarLayout.getMeasuredWidth();
+//                    Toast.makeText(DetailBoatActivity.this, "" + width, Toast.LENGTH_SHORT).show();
+
+                }
+            });
+//            mAdditionFrame.setVisibility(View.GONE);
             CharactersFragmentList fragmentListInner = new CharactersFragmentList();
-//            Bundle arg = new Bundle();
-//            arg.putInt("idSpinner",mIndexCurrentLanguage);
             startFragment(fragmentListInner);
             getIntent().putExtra("bool",false);
-//            isFirstStart = false;
         }
 
         images.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mAdditionFrame.setVisibility(View.GONE);
-                spinner.setVisibility(View.GONE);
+//                spinner.setVisibility(View.GONE);
             }
         });
 
@@ -107,8 +119,8 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
         video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String> arrayList = prepareArrayStringTpPlayer(getUrlArrayByID());
-                spinner.setVisibility(View.GONE);
+                arrayListVideos = prepareArrayStringTpPlayer(getUrlArrayByID());
+//                spinner.setVisibility(View.GONE);
                 VideoFragment videoFragment = new VideoFragment();
                 Bundle arg2 = new Bundle();
                 arg2.putString("id", "0");
@@ -116,11 +128,11 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
                 FragmentTransaction transaction2 = getFragmentManager().beginTransaction();
                 transaction2 = transaction2.replace(R.id.boat_detail_frame, videoFragment, "videoFragment");
                 transaction2.commit();
-                videoFragment.setVideoId(arrayList.get(0), false);
+                videoFragment.setVideoId(arrayListVideos.get(0), false);
 
                 VideoGridListFragment videoGridListFragment = new VideoGridListFragment();
                 Bundle arg = new Bundle();
-                arg.putStringArrayList("videos", arrayList);
+                arg.putStringArrayList("videos", arrayListVideos);
                 videoGridListFragment.setArguments(arg);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction = transaction.replace(R.id.boats_grid_frame, videoGridListFragment, "videoFragmentGridList");
@@ -131,6 +143,17 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
         });
 
         checkYouTubeApi();
+    }
+    public RelativeLayout getmToolbarLayout() {
+        return mToolbarLayout;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public ArrayList<String> getArrayListVideos() {
+        return arrayListVideos;
     }
 
     private ArrayList<String> getUrlArrayByID() {
@@ -218,6 +241,10 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
         video.setText(videoName);
     }
 
+    public String getIdBoat() {
+        return idBoat;
+    }
+
     public int getmIndexCurrentLanguage() {
         return mIndexCurrentLanguage;
     }
@@ -225,4 +252,50 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
     public void setmIndexCurrentLanguage(int mIndexCurrentLanguage) {
         this.mIndexCurrentLanguage = mIndexCurrentLanguage;
     }
+
+//    private void setupSpinner() {
+//        ArrayList<Boat> boatArrayList = MainActivity.boats;
+//        for (Boat tempBoat : boatArrayList) {
+//            if (tempBoat.getId().equals(idBoat)) {
+//                mCharacteristicsArrayList = tempBoat.getCharacteristicsArrayList();
+//                break;
+//            }
+//        }
+//        ArrayList<String> arrayLang = new ArrayList<>();
+//        MySpinnerAdapter spinnerAdapter = new MySpinnerAdapter();
+//
+//        for (BoatsCharacteristics boatsCharacteristics : mCharacteristicsArrayList) {
+//            arrayLang.add(boatsCharacteristics.getName());
+//        }
+//
+//        spinnerAdapter.addItems(arrayLang);
+//
+//        Drawable spinnerDrawable = DetailBoatActivity.spinner.getBackground().getConstantState().newDrawable();
+//        spinnerDrawable.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+//        DetailBoatActivity.spinner.setBackground(spinnerDrawable);
+//        DetailBoatActivity.spinner.setAdapter(spinnerAdapter);
+//        DetailBoatActivity.spinner.setSelection(mIndexCurrentLanguage);
+//        DetailBoatActivity.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view,
+//                                       int position, long id) {
+//                setmIndexCurrentLanguage(position);
+//                changeButtonText(
+//                        mCharacteristicsArrayList.get(position).getCharacteristics(),
+//                        mCharacteristicsArrayList.get(position).getPictures(),
+//                        mCharacteristicsArrayList.get(position).getVideos()
+//                );
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> arg0) {
+//            }
+//        });
+//        DetailBoatActivity.spinner.setVisibility(View.VISIBLE);
+//        changeButtonText(
+//                mCharacteristicsArrayList.get(mIndexCurrentLanguage).getCharacteristics(),
+//                mCharacteristicsArrayList.get(mIndexCurrentLanguage).getPictures(),
+//                mCharacteristicsArrayList.get(mIndexCurrentLanguage).getVideos()
+//        );
+//    }
 }
