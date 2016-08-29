@@ -58,7 +58,7 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
     private String idBoat;
     private static int width;
     private ArrayList<String> arrayListVideos;
-//    private static boolean isFirstStart = true;
+    private String startVideoName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +133,7 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
                 VideoGridListFragment videoGridListFragment = new VideoGridListFragment();
                 Bundle arg = new Bundle();
                 arg.putStringArrayList("videos", arrayListVideos);
+                arg.putString("startName", getStartVideoNameByID());
                 videoGridListFragment.setArguments(arg);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction = transaction.replace(R.id.boats_grid_frame, videoGridListFragment, "videoFragmentGridList");
@@ -160,10 +161,33 @@ public class DetailBoatActivity extends YouTubeBaseActivity {
         ArrayList<Boat> boatArrayList = MainActivity.boats;
         for (Boat tempBoat : boatArrayList) {
             if (tempBoat.getId().equals(idBoat)) {
+                startVideoName = tempBoat.getCharacteristicsArrayList().get(mIndexCurrentLanguage).getVideos();
                 return tempBoat.getArrayVideos();
             }
         }
         return new ArrayList<>();
+    }
+
+    public void recreateVideoList() {
+        VideoGridListFragment videoGridListFragment = new VideoGridListFragment();
+        Bundle arg = new Bundle();
+        arg.putStringArrayList("videos", prepareArrayStringTpPlayer(getUrlArrayByID()));
+        arg.putString("startName", getStartVideoNameByID());
+        videoGridListFragment.setArguments(arg);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction = transaction.replace(R.id.boats_grid_frame, videoGridListFragment, "videoFragmentGridList");
+        transaction.commit();
+
+        mAdditionFrame.setVisibility(View.VISIBLE);
+    }
+    private String getStartVideoNameByID() {
+        ArrayList<Boat> boatArrayList = MainActivity.boats;
+        for (Boat tempBoat : boatArrayList) {
+            if (tempBoat.getId().equals(idBoat)) {
+                return tempBoat.getCharacteristicsArrayList().get(mIndexCurrentLanguage).getVideos();
+            }
+        }
+        return "Video";
     }
 
     private ArrayList<String> prepareArrayStringTpPlayer(ArrayList<String> arrayList) {

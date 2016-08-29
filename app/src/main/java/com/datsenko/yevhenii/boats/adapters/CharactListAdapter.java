@@ -20,7 +20,12 @@ public class CharactListAdapter extends RecyclerView.Adapter<CharactListAdapter.
     private Activity activity;
 
     public CharactListAdapter(ArrayList<FieldCharacteristics> arrayCharacters, Activity activity) {
-        this.arrayCharacters = arrayCharacters;
+        this.arrayCharacters = new ArrayList<>();
+        for (FieldCharacteristics fieldCharacteristics : arrayCharacters) {
+            if (!fieldCharacteristics.getFieldValue().isEmpty()) {
+                this.arrayCharacters.add(fieldCharacteristics);
+            }
+        }
         this.activity = activity;
     }
 

@@ -198,6 +198,7 @@ public class VideoFragment extends YouTubePlayerFragment
                             mCharacteristicsArrayList.get(position).getPictures(),
                             mCharacteristicsArrayList.get(position).getVideos()
                     );
+                    ((DetailBoatActivity)getActivity()).recreateVideoList();
                 }
 
                 @Override

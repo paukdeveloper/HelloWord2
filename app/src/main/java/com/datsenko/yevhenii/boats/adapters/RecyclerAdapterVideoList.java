@@ -23,10 +23,12 @@ import java.util.List;
 public class RecyclerAdapterVideoList extends RecyclerView.Adapter<RecyclerAdapterVideoList.VideoListViewHolder> {
     private List<VideoEntry> videoEntryList;
     private Activity activity;
+    private String startVideoName;
 
-    public RecyclerAdapterVideoList(List<VideoEntry> videoEntryList, Activity activity) {
+    public RecyclerAdapterVideoList(List<VideoEntry> videoEntryList, Activity activity, String startName) {
         this.videoEntryList = new ArrayList<>(videoEntryList);
         this.activity = activity;
+        this.startVideoName = startName;
     }
 
     @Override
@@ -55,7 +57,8 @@ public class RecyclerAdapterVideoList extends RecyclerView.Adapter<RecyclerAdapt
                 .placeholder(R.drawable.loading_thumbnail)
                 .error(R.drawable.no_thumbnail)
                 .into(holder.image);
-        holder.title.setText(videoEntryList.get(position).getText());
+//        holder.title.setText(videoEntryList.get(position).getText());
+        holder.title.setText(startVideoName + " " + (holder.getAdapterPosition() + 1));
     }
 
 //    private String getURL(String videoId) {

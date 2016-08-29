@@ -24,21 +24,21 @@ public class VideoGridListFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerAdapterVideoList adapterVideoList;
     private RecyclerView.LayoutManager layoutManager;
-//    public static List<VideoEntry> video_list;
+    public String startName;
     public static List<VideoEntry> video_list;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.layout_recycler_video_list,container,false);
+        View v = inflater.inflate(R.layout.layout_recycler_video_list, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view_video);
-        layoutManager = new GridLayoutManager(getActivity(),4);
+        layoutManager = new GridLayoutManager(getActivity(), 4);
         recyclerView.setLayoutManager(layoutManager);
         initData();
-        adapterVideoList = new RecyclerAdapterVideoList(video_list,getActivity());
+        adapterVideoList = new RecyclerAdapterVideoList(video_list, getActivity(),startName);
         recyclerView.setAdapter(adapterVideoList);
-        
+
 
         return v;
     }
@@ -49,6 +49,9 @@ public class VideoGridListFragment extends Fragment {
             for (String str : getArguments().getStringArrayList("videos")) {
                 video_list.add(new VideoEntry(str, str));
             }
+        }
+        if (getArguments().getString("startName")!=null) {
+            startName = getArguments().getString("startName");
         }
 //        video_list.add(new VideoEntry("YouTube Collection", "Y_UmWdcTrrc"));
 //        video_list.add(new VideoEntry("GMail Tap", "1KhZKNZO8mQ"));
